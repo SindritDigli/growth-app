@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifica Fase</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Modifica Fase</h1>
+
+<form method="POST">
+    <input type="text" name="name" value="{{ phase[1] }}" required>
+    <textarea name="description" rows="4" required>{{ phase[2] }}</textarea>
+    <select name="status">
+        <option value="In corso" {% if phase[4] == 'In corso' %}selected{% endif %}>In corso</option>
+        <option value="Completata" {% if phase[4] == 'Completata' %}selected{% endif %}>Completata</option>
+    </select>
+    <button type="submit">Salva Modifiche</button>
+</form>
+
+<a href="/phase">Annulla</a>
+
+</body>
+</html>

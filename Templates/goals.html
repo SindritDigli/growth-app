@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Obiettivi Annuali</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Obiettivi Annuali</h1>
+
+<form method="POST">
+    <input type="text" name="title" placeholder="Titolo obiettivo" required>
+    <input type="text" name="category" placeholder="Categoria (Salute, Carriera...)" required>
+    <input type="number" name="progress" placeholder="Progresso %" min="0" max="100" required>
+    <button type="submit">Aggiungi</button>
+</form>
+
+<h2>Lista Obiettivi</h2>
+
+<ul>
+    {% for goal in goals %}
+        <li>
+            <strong>{{ goal[1] }}</strong>
+            <p>Categoria: {{ goal[2] }}</p>
+            <p>Stato: {{ goal[4] }}</p>
+
+            {% if goal[3] >= 70 %}
+                {% set color = "green" %}
+            {% elif goal[3] >= 40 %}
+                {% set color = "orange" %}
+            {% else %}
+                {% set color = "red" %}
+            {% endif %}
+
+            <div style="background: #ddd; width: 100%; border-radius: 6px;">
+                <div style="width: {{ goal[3] }}%; background: {{ color }}; color: white; padding: 5px; border-radius: 6px;">
+                    {{ goal[3] }}%
+                </div>
+            </div>
+
+            <br>
+
+            <a href="/edit_goal/{{ goal[0] }}">✏</a>
+            <a href="/delete_goal/{{ goal[0] }}">❌</a>
+
+        </li>
+        <hr>
+    {% endfor %}
+</ul>
+
+<a href="/">Torna alla Home</a>
+
+</body>
+</html>

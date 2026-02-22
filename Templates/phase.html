@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fase Attuale</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Gestione Fasi</h1>
+
+<form method="POST">
+    <input type="text" name="name" placeholder="Nome fase (Redenzione, Preparazione...)" required>
+    <textarea name="description" rows="4" placeholder="Descrizione della fase..." required></textarea>
+    <button type="submit">Salva Fase</button>
+</form>
+
+<hr>
+
+{% if current_phase %}
+    <h2>Fase Attuale: {{ current_phase[1] }}</h2>
+    <div style="white-space: pre-line; border-left: 4px solid #3498db; padding-left: 10px; margin-bottom: 10px;">
+        {{ current_phase[2] }}
+    </div>
+    <p><small>Iniziata il: {{ current_phase[3] }} | Stato: {{ current_phase[4] }}</small></p>
+{% else %}
+    <p>Nessuna fase attiva.</p>
+{% endif %}
+
+<hr>
+
+<h2>Fasi Precedenti / Tutte le Fasi</h2>
+<ul>
+    {% for phase in phases %}
+        <li>
+            <strong>{{ phase[1] }}</strong>
+            {% if phase[4] == 'Completata' %}✔{% endif %}
+            <p style="white-space: pre-line;">{{ phase[2] }}</p>
+            <p>Iniziata il: {{ phase[3] }} | Stato: {{ phase[4] }}</p>
+            
+            <a href="/edit_phase/{{ phase[0] }}">✏ Modifica</a>
+            <a href="/delete_phase/{{ phase[0] }}">❌ Elimina</a>
+        </li>
+        <hr>
+    {% endfor %}
+</ul>
+
+<a href="/">Torna alla Home</a>
+
+</body>
+</html>

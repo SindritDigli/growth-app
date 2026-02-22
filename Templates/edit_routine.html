@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifica Routine</title>
+</head>
+<body>
+
+<h1>Modifica Routine</h1>
+
+<form method="POST">
+    <textarea name="name" rows="6" required>{{ routine[1] }}</textarea>
+    <input type="text" name="frequency" value="{{ routine[2] }}" required>
+    <button type="submit">Salva</button>
+</form>
+
+<a href="/routine">Annulla</a>
+
+</body>
+</html>

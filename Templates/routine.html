@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Routine</title>
+</head>
+<body>
+
+<h1>Le tue Routine</h1>
+
+<form method="POST">
+    <textarea name="name" placeholder="Scrivi la tua routine..." rows="4" required></textarea>
+    <input type="text" name="frequency" placeholder="Frequenza (giornaliera, settimanale...)" required>
+    <button type="submit">Aggiungi</button>
+</form>
+
+<h2>Lista Routine</h2>
+<h2>Completamento: {{ percentage }}%</h2>
+<ul>
+    {% for routine in routines %}
+        <li>
+
+            <div style="white-space: pre-line;">
+                {% if routine[3] == 1 %}
+                    <s>{{ routine[1] }}</s>
+                {% else %}
+                    {{ routine[1] }}
+                {% endif %}
+            </div>
+
+            <p><strong>Frequenza:</strong> {{ routine[2] }}</p>
+            <p><small>Creato il: {{ routine[4] }}</small></p>
+
+            <a href="/toggle_routine/{{ routine[0] }}">✔</a>
+            <a href="/edit_routine/{{ routine[0] }}">✏</a>
+            <a href="/delete_routine/{{ routine[0] }}">❌</a>
+
+        </li>
+        <hr>
+    {% endfor %}
+</ul>
+
+<a href="/">Torna alla Home</a>
+
+</body>
+</html>

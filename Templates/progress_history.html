@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Storico Grafici</title>
+</head>
+<body>
+<h1>Grafici Salvati</h1>
+
+<ul>
+{% for item in history %}
+    <li>
+        ID: {{ item[0] }} |
+        Creato il: {{ item[1] }} |
+        Giorni: {{ item[2] | length }}
+    </li>
+{% endfor %}
+</ul>
+
+<a href="/progress">Torna al Grafico</a>
+</body>
+</html>

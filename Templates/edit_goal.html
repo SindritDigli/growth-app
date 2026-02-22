@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifica Obiettivo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Modifica Obiettivo</h1>
+
+<form method="POST">
+    <input type="text" name="title" value="{{ goal[1] }}" required>
+    <input type="text" name="category" value="{{ goal[2] }}" required>
+    <input type="number" name="progress" value="{{ goal[3] }}" min="0" max="100" required>
+    <button type="submit">Salva</button>
+</form>
+
+<a href="/goals">Annulla</a>
+
+</body>
+</html>
