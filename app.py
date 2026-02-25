@@ -1,15 +1,39 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import json
 
 app = Flask(__name__)
+app.secret_key = "una_chiave_super_segreta_123"
 
 @app.route("/")
 def home():
+    if not session.get("logged_in"):
+        return redirect("/login")
     return render_template("index.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        password = request.form["password"]
+
+        if password == "170481":
+            session["logged_in"] = True
+            return redirect("/")
+        else:
+            return "Password sbagliata"
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 
 @app.route("/routine", methods=["GET", "POST"])
 def routine():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -42,6 +66,9 @@ def routine():
 
 @app.route("/delete_routine/<int:id>")
 def delete_routine(id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -53,6 +80,9 @@ def delete_routine(id):
 
 @app.route("/toggle_routine/<int:id>")
 def toggle_routine(id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -69,6 +99,9 @@ def toggle_routine(id):
 
 @app.route("/edit_routine/<int:id>", methods=["GET", "POST"])
 def edit_routine(id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -92,6 +125,9 @@ def edit_routine(id):
 
 @app.route("/goals", methods=["GET", "POST"])
 def goals():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -124,6 +160,9 @@ def goals():
 
 @app.route("/delete_goal/<int:id>")
 def delete_goal(id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -135,6 +174,9 @@ def delete_goal(id):
 
 @app.route("/edit_goal/<int:id>", methods=["GET", "POST"])
 def edit_goal(id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -163,6 +205,9 @@ def edit_goal(id):
 
 @app.route("/phase", methods=["GET", "POST"])
 def phase():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -186,6 +231,9 @@ def phase():
 
 @app.route("/delete_phase/<int:id>")
 def delete_phase(id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     cursor.execute("DELETE FROM phase WHERE id = ?", (id,))
@@ -195,6 +243,9 @@ def delete_phase(id):
 
 @app.route("/edit_phase/<int:id>", methods=["GET", "POST"])
 def edit_phase(id):
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -219,6 +270,9 @@ def edit_phase(id):
 
 @app.route("/progress", methods=["GET", "POST"])
 def progress():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -279,6 +333,9 @@ def progress():
 
 @app.route("/delete_last_point")
 def delete_last_point():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     cursor.execute("DELETE FROM progress WHERE id = (SELECT MAX(id) FROM progress)")
@@ -288,6 +345,9 @@ def delete_last_point():
 
 @app.route("/reset_progress")
 def reset_progress():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
     cursor.execute("DELETE FROM progress")
@@ -297,6 +357,9 @@ def reset_progress():
 
 @app.route("/save_progress")
 def save_progress():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -317,6 +380,9 @@ def save_progress():
 
 @app.route("/progress_history")
 def progress_history():
+    if not session.get("logged_in"):
+        return redirect("/login")
+    
     conn = sqlite3.connect("database.db")
     cursor = conn.cursor()
 
@@ -327,4 +393,4 @@ def progress_history():
     return render_template("progress_history.html", history=history)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
